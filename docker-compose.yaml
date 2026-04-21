@@ -1,0 +1,101 @@
+services:
+  mongodb:
+    build: ./mongodb
+    image: dkrish194/mongodb:2.0.0
+    labels:
+      - project=roboshop
+      - component=mongodb
+    networks:
+      - roboshop
+
+  redis:
+    image: redis:7.0
+    container_name: redis
+    networks:
+      - roboshop
+
+  mysql:
+    build: ./mysql
+    image: dkrish194/mysql:2.0.0
+    networks:
+      - roboshop
+  rabbitmq:
+    build: ./rabbitmq
+    image: dkrish194/rabbitmq:2.0.0
+    networks:
+      - roboshop
+    
+
+
+  catalogue:
+    build: ./catalogue
+    image: dkrish194/catalogue:1.0.0
+    labels:
+      - project=roboshop
+      - component= catalogue
+    depends_on:
+      - mongodb
+    networks:
+      - roboshop
+  
+  cart:
+    build: ./cart
+    image: dkrish194/cart:2.0.0
+    depends_on: 
+      - catalogue
+      - redis
+    networks: 
+      - roboshop
+
+  user:
+    build: ./user
+    image: dkrish194/user:1.0.0
+    networks:
+      - roboshop
+    depends_on:
+      - redis
+      - mongodb
+
+  shipping:
+    build: ./shipping
+    image: dkrish194/shipping:2.0.0
+    depends_on:
+      - cart
+      - mysql
+    networks:
+      - roboshop
+  
+  payment:
+    build: ./payment
+    image: dkrish194/payment:2.0.0
+    depends_on:
+      - cart
+      - user
+      - rabbitmq
+    networks:
+      - roboshop
+
+  frontend:
+    build: ./frontend
+    image: dkrish194/frontend:1.0.0
+    ports:
+      - "8090:80"
+    depends_on:
+      - catalogue
+      - cart
+      - user
+      - shipping
+      - payment
+
+    networks:
+      - roboshop
+    
+ 
+
+networks:
+  roboshop:
+    driver: bridge
+
+
+
+  

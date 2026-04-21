@@ -1,0 +1,31 @@
+{
+
+{
+  "ansible.ansible.enabled": false,
+  "ansible.lightspeed.enabled": false,
+
+  "terraform.languageServer.enable": false,
+
+  "docker.enableDockerfileLanguageFeatures": false,
+
+  "yaml.validate": true,
+  "yaml.completion": true,
+  "vs-kubernetes.enable": true,
+
+"yaml.validate": true,
+    "yaml.schemas": {
+
+        "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json": [
+            "docker-compose.yml",
+            "docker-compose.yaml",
+            "Docker-compose.yml",
+            "Docker-compose.yaml",
+            "compose.yml",
+            "compose.yaml"
+        ]
+    },
+    "yaml.customTags": [
+
+
+    ]
+}
